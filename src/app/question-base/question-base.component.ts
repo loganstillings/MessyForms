@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import { CommonService } from '../common.service';
 
 @Component({
   selector: 'app-question-base',
@@ -8,22 +9,15 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class QuestionBaseComponent implements OnInit {
   @Input('index') index: number;
   @Input('formGroup') formGroup: FormGroup;
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private commonService: CommonService) {}
 
   ngOnInit() {}
 
   delete(): void {
-    console.log(this.index);
+    this.commonService.delete(this.index);
   }
 
   addSubInput(): void {
-    let subInputs = this.formGroup.get('SubInputs');
-    subInputs['controls'].push(
-      this.formBuilder.group({
-        Question: '',
-        Type: 0,
-        SubInputs: this.formBuilder.array([]),
-      }),
-    );
+    this.commonService.addSubInput(this.formGroup);
   }
 }

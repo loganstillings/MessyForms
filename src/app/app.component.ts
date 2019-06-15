@@ -4,6 +4,7 @@ import { IConditionType } from 'src/model/interfaces/condition-type';
 import { ConditionTypes } from 'src/model/static-lists/condition-types';
 import { IQuestionType } from 'src/model/interfaces/question-type';
 import { QuestionTypes } from 'src/model/static-lists/question-types';
+import { CommonService } from './common.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,10 @@ export class AppComponent implements OnInit {
   conditionTypes: IConditionType[] = ConditionTypes;
   questionTypes: IQuestionType[] = QuestionTypes;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private commonService: CommonService,
+  ) {}
 
   ngOnInit(): void {
     this.customBuiltForm = this.formBuilder.array([]);
@@ -36,13 +40,10 @@ export class AppComponent implements OnInit {
   }
 
   hasSubInputs(group: FormGroup): boolean {
-    let subInputs = group.get('SubInputs');
-    let hasSubInputs = subInputs['controls'] && subInputs['controls'].length;
-    return hasSubInputs;
+    return this.commonService.hasSubInputs(group);
   }
 
   getSubInputs(group: FormGroup): FormArray {
-    let subInputs = group.get('SubInputs');
-    return subInputs['controls'];
+    return this.commonService.getSubInputs(group);
   }
 }

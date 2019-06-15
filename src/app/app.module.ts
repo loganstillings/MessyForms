@@ -6,11 +6,17 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SubInputsComponent } from './sub-inputs/sub-inputs.component';
 import { SubInputComponent } from './sub-input/sub-input.component';
 import { QuestionBaseComponent } from './question-base/question-base.component';
+import { CommonService } from './common.service';
 
 @NgModule({
-  declarations: [AppComponent, SubInputsComponent, SubInputComponent, QuestionBaseComponent],
+  declarations: [
+    AppComponent,
+    SubInputsComponent,
+    SubInputComponent,
+    QuestionBaseComponent,
+  ],
   imports: [BrowserModule, ReactiveFormsModule],
-  providers: [],
+  providers: [CommonService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
