@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormArray } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
+import { CommonService } from '../common.service';
 
 @Component({
   selector: 'app-sub-inputs',
@@ -7,7 +8,15 @@ import { FormArray } from '@angular/forms';
 })
 export class SubInputsComponent implements OnInit {
   @Input('subInputs') subInputs: FormArray;
-  constructor() {}
+  constructor(private commonService: CommonService) {}
 
   ngOnInit() {}
+
+  hasSubInputs(group: FormGroup): boolean {
+    return this.commonService.hasSubInputs(group);
+  }
+
+  getSubInputs(group: FormGroup): FormArray {
+    return this.commonService.getSubInputs(group);
+  }
 }

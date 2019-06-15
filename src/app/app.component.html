@@ -2,7 +2,9 @@
   <h4>Form Builder</h4>
   <form *ngIf="customBuiltForm" [formGroup]="customBuiltForm">
     <div *ngFor="let group of customBuiltForm.controls; let i = index" [formGroupName]="i">
-      <app-question-base [index]="i" [formGroup]="group"></app-question-base>
+      <div class="question-block padded">
+        <app-question-base [index]="i" [formGroup]="group"></app-question-base>
+      </div>
       <div *ngIf="hasSubInputs(group)">
         <app-sub-inputs [subInputs]="getSubInputs(group)"></app-sub-inputs>
       </div>

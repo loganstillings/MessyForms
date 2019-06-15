@@ -14,8 +14,9 @@ export class CommonService {
     subInputs['controls'].push(
       this.formBuilder.group({
         Question: '',
-        Type: 0,
+        QuestionTypeId: 0,
         SubInputs: this.formBuilder.array([]),
+        ConditionTypeId: 0,
       }),
     );
   }
