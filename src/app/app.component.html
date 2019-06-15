@@ -1,17 +1,10 @@
 <div class="card padded">
   <h4>Form Builder</h4>
   <form *ngIf="customBuiltForm" [formGroup]="customBuiltForm">
-    <div *ngFor="let group of customBuiltForm.controls; let i = index" [formGroupName]="i"
-      class="question-block padded">
-      <div class="form-group">
-        <label for="Question">Question</label>
-        <input type="text" name="Question" class="form-control" formControlName="Question">
-      </div>
-      <div class="form-group">
-        <label for="Type">Type</label>
-        <select name="Type" class="form-control" formControlName="Type">
-          <option *ngFor="let questionType of questionTypes" [value]="questionType.Id">{{questionType.Name}}</option>
-        </select>
+    <div *ngFor="let group of customBuiltForm.controls; let i = index" [formGroupName]="i">
+      <app-question-base [index]="i" [formGroup]="group"></app-question-base>
+      <div *ngIf="hasSubInputs(group)">
+        <app-sub-inputs [subInputs]="getSubInputs(group)"></app-sub-inputs>
       </div>
     </div>
   </form>

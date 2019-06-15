@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+.padded {
+  padding: 15px;
+}
+
+.question-block {
+  border: 1px solid gray;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.spaced {
+  margin: 15px;
+}

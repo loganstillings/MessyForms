@@ -1,0 +1,4 @@
+<div *ngFor="let subInput of subInputs">
+  {{subInput}}
+  <app-sub-inputs [subInputs]="subInput.subInputs" *ngIf="subInput.subInputs"></app-sub-inputs>
+</div>
