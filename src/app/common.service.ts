@@ -17,7 +17,7 @@ export class CommonService {
   }
 
   addSubInput(formGroup: FormGroup): void {
-    formGroup.get('SubInputs')['controls'].push(
+    this.getSubInputs(formGroup)['controls'].push(
       this.formBuilder.group({
         Question: null,
         QuestionTypeId: null,
@@ -29,7 +29,7 @@ export class CommonService {
   }
 
   hasSubInputs(group: FormGroup): boolean {
-    let subInputs = group.get('SubInputs');
+    let subInputs = this.getSubInputs(group);
     let hasSubInputs =
       subInputs && subInputs['controls'] && subInputs['controls'].length;
     return hasSubInputs;

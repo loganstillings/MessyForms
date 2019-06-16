@@ -15,9 +15,13 @@ export class SubInputsComponent implements OnInit {
     let abstractControl = this.commonService.getSubInputs(this.parentFormGroup);
     this.subInputs = abstractControl['controls'];
     abstractControl.setParent(this.parentFormGroup);
-    this.subInputs.forEach((subInput: FormGroup) => {
-      subInput.setParent(this.parentFormGroup);
-    });
+    for (var i = 0; i < this.subInputs.length; i++) {
+      if (!this.subInputs[i].parent) {
+        this.subInputs[i].setParent(this.parentFormGroup.get(
+          'SubInputs',
+        ) as FormArray);
+      }
+    }
   }
 
   hasSubInputs(group: FormGroup): boolean {
