@@ -12,7 +12,12 @@ export class SubInputsComponent implements OnInit {
   constructor(private commonService: CommonService) {}
 
   ngOnInit() {
-    this.subInputs = this.commonService.getSubInputs(this.parentFormGroup);
+    let abstractControl = this.commonService.getSubInputs(this.parentFormGroup);
+    this.subInputs = abstractControl['controls'];
+    abstractControl.setParent(this.parentFormGroup);
+    this.subInputs.forEach((subInput: FormGroup) => {
+      subInput.setParent(this.parentFormGroup);
+    });
   }
 
   hasSubInputs(group: FormGroup): boolean {

@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormArray,
+  AbstractControl,
+} from '@angular/forms';
 
 @Injectable()
 export class CommonService {
@@ -30,7 +35,7 @@ export class CommonService {
     return hasSubInputs;
   }
 
-  getSubInputs(group: FormGroup): FormArray {
-    return group.get('SubInputs')['controls'];
+  getSubInputs(group: FormGroup): AbstractControl {
+    return group.get('SubInputs');
   }
 }
