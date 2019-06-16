@@ -7,8 +7,14 @@
           {{conditionType.Name}}</option>
       </select>
     </div>
-    <div class="inline-block col-md-4">
-      <input class="form-control" type="text" formControlName="ConditionValue">
+    <div class="inline-block col-md-4" [ngSwitch]="parentQuestionTypeId">
+      <input *ngSwitchCase="questionTypesEnum.Text" class="form-control" type="text" formControlName="ConditionValue">
+      <select *ngSwitchCase="questionTypesEnum.YesNo" class="form-control" formControlName="ConditionValue">
+        <option [ngValue]="1">Yes</option>
+        <option [ngValue]="0">No</option>
+      </select>
+      <input *ngSwitchCase="questionTypesEnum.Number" class="form-control" type="number"
+        formControlName="ConditionValue">
     </div>
   </div>
   <app-question-base [formGroup]="formGroup" [index]="index"></app-question-base>
