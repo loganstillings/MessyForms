@@ -1,6 +1,6 @@
 <div *ngIf="subInputs" [formGroup]="parentFormGroup">
   <div *ngFor="let subInput of subInputs; let i = index" class="sub-inputs-list" formArrayName="SubInputs">
-    <app-sub-input [parentFormGroup]="subInput" [index]="i"></app-sub-input>
+    <app-sub-input [formGroup]="subInput" [index]="i"></app-sub-input>
     <app-sub-inputs *ngIf="hasSubInputs(subInput)" [parentFormGroup]="subInput"></app-sub-inputs>
   </div>
 </div>

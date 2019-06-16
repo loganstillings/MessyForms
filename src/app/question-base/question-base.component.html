@@ -1,4 +1,4 @@
-<div [formGroup]="parentFormGroup">
+<div [formGroup]="formGroup">
   <div class="form-group">
     <label for="Question">Question</label>
     <input type="text" name="Question" class="form-control" formControlName="Question">
@@ -6,7 +6,7 @@
   <div class="form-group">
     <label for="Type">Type</label>
     <select name="Type" class="form-control" formControlName="QuestionTypeId">
-      <option *ngFor="let questionType of questionTypes" [value]="questionType.Id">{{questionType.Name}}</option>
+      <option *ngFor="let questionType of questionTypes" [ngValue]="questionType.Id">{{questionType.Name}}</option>
     </select>
   </div>
   <div class="row padded pull-right">

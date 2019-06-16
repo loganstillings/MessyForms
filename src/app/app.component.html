@@ -3,7 +3,7 @@
   <form *ngIf="customBuiltForm" [formGroup]="customBuiltForm">
     <div *ngFor="let question of customBuiltForm.controls; let i = index">
       <div class="question-block padded">
-        <app-question-base [index]="i" [parentFormGroup]="question"></app-question-base>
+        <app-question-base [index]="i" [formGroup]="question"></app-question-base>
       </div>
       <div *ngIf="hasSubInputs(question)">
         <app-sub-inputs [parentFormGroup]="question"></app-sub-inputs>

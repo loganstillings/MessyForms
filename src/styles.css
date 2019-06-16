@@ -16,3 +16,7 @@
 .sub-inputs-list {
   margin-left: 25px;
 }
+
+.inline-block {
+  display: inline-block;
+}
