@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormArray, FormGroup, AbstractControl } from '@angular/forms';
 import { CommonService } from '../common.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sub-inputs',
@@ -9,9 +10,25 @@ import { CommonService } from '../common.service';
 export class SubInputsComponent implements OnInit {
   @Input('parentFormGroup') parentFormGroup: FormGroup;
   subInputs: FormArray;
+  subscriptions: Subscription = new Subscription();
   constructor(private commonService: CommonService) {}
 
   ngOnInit() {
+    this.bindChanges();
+    this.subscribeToChanges();
+  }
+
+  subscribeToChanges(): void {
+    this.subscriptions = this.commonService.formGroup$.subscribe(() => {
+      this.bindChanges();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  bindChanges(): void {
     let abstractControl = this.commonService.getSubInputs(this.parentFormGroup);
     this.subInputs = abstractControl['controls'];
     abstractControl.setParent(this.parentFormGroup);

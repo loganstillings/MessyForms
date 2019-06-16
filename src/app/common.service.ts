@@ -5,9 +5,13 @@ import {
   FormArray,
   AbstractControl,
 } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class CommonService {
+  private _formGroupSource = new BehaviorSubject<FormGroup>(new FormGroup({}));
+  formGroup$ = this._formGroupSource.asObservable();
+
   constructor(private formBuilder: FormBuilder) {}
 
   delete(index: number, formGroup: FormGroup): void {
@@ -26,6 +30,7 @@ export class CommonService {
         ConditionValue: null,
       }),
     );
+    this._formGroupSource.next(formGroup);
   }
 
   hasSubInputs(group: FormGroup): boolean {
