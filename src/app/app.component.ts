@@ -22,8 +22,8 @@ export class AppComponent implements OnInit {
   addInput(): void {
     this.customBuiltForm.push(
       this.formBuilder.group({
-        Question: '',
-        QuestionTypeId: 0,
+        Question: null,
+        QuestionTypeId: null,
         SubInputs: this.formBuilder.array([]),
       }),
     );
@@ -35,9 +35,5 @@ export class AppComponent implements OnInit {
 
   hasSubInputs(group: FormGroup): boolean {
     return this.commonService.hasSubInputs(group);
-  }
-
-  getSubInputs(group: FormGroup): FormArray {
-    return this.commonService.getSubInputs(group);
   }
 }

@@ -1,10 +1,11 @@
-<div class="question-block padded" [formGroup]="formGroup">
+<div class="question-block padded" [formGroup]="parentFormGroup">
   <div class="form-group">
     <label for="ConditionTypeId">Condition</label>
     <select name="ConditionTypeId" class="form-control" formControlName="ConditionTypeId">
       <option *ngFor="let conditionType of conditionTypes" [value]="conditionType.Id">
         {{conditionType.Name}}</option>
     </select>
+    <input type="text" name="ConditionValue" formControlName="ConditionValue">
   </div>
-  <app-question-base [formGroup]="formGroup" [index]="index"></app-question-base>
+  <app-question-base [parentFormGroup]="parentFormGroup" [index]="index"></app-question-base>
 </div>

@@ -10,7 +10,7 @@ import { QuestionTypes } from 'src/model/static-lists/question-types';
 })
 export class QuestionBaseComponent implements OnInit {
   @Input('index') index: number;
-  @Input('formGroup') formGroup: FormGroup;
+  @Input('parentFormGroup') parentFormGroup: FormGroup;
   questionTypes: IQuestionType[] = QuestionTypes;
 
   constructor(private commonService: CommonService) {}
@@ -18,10 +18,10 @@ export class QuestionBaseComponent implements OnInit {
   ngOnInit() {}
 
   delete(): void {
-    this.commonService.delete(this.index);
+    this.commonService.delete(this.index, this.parentFormGroup);
   }
 
   addSubInput(): void {
-    this.commonService.addSubInput(this.formGroup);
+    this.commonService.addSubInput(this.parentFormGroup);
   }
 }

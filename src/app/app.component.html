@@ -1,12 +1,12 @@
 <div class="card padded">
   <h4>Form Builder</h4>
   <form *ngIf="customBuiltForm" [formGroup]="customBuiltForm">
-    <div *ngFor="let group of customBuiltForm.controls; let i = index" [formGroupName]="i">
+    <div *ngFor="let question of customBuiltForm.controls; let i = index">
       <div class="question-block padded">
-        <app-question-base [index]="i" [formGroup]="group"></app-question-base>
+        <app-question-base [index]="i" [parentFormGroup]="question"></app-question-base>
       </div>
-      <div *ngIf="hasSubInputs(group)">
-        <app-sub-inputs [subInputs]="getSubInputs(group)"></app-sub-inputs>
+      <div *ngIf="hasSubInputs(question)">
+        <app-sub-inputs [parentFormGroup]="question"></app-sub-inputs>
       </div>
     </div>
   </form>

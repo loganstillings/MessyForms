@@ -5,30 +5,32 @@ import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 export class CommonService {
   constructor(private formBuilder: FormBuilder) {}
 
-  delete(index: number): void {
-    console.log(index);
+  delete(index: number, formGroup: FormGroup): void {
+    if (formGroup.parent) {
+      (<FormArray>formGroup.parent)['controls'].splice(index, 1);
+    }
   }
 
   addSubInput(formGroup: FormGroup): void {
-    let subInputs = formGroup.get('SubInputs');
-    subInputs['controls'].push(
+    formGroup.get('SubInputs')['controls'].push(
       this.formBuilder.group({
-        Question: '',
-        QuestionTypeId: 0,
+        Question: null,
+        QuestionTypeId: null,
         SubInputs: this.formBuilder.array([]),
-        ConditionTypeId: 0,
+        ConditionTypeId: null,
+        ConditionValue: null,
       }),
     );
   }
 
   hasSubInputs(group: FormGroup): boolean {
     let subInputs = group.get('SubInputs');
-    let hasSubInputs = subInputs['controls'] && subInputs['controls'].length;
+    let hasSubInputs =
+      subInputs && subInputs['controls'] && subInputs['controls'].length;
     return hasSubInputs;
   }
 
   getSubInputs(group: FormGroup): FormArray {
-    let subInputs = group.get('SubInputs');
-    return subInputs['controls'];
+    return group.get('SubInputs')['controls'];
   }
 }

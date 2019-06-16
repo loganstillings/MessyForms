@@ -9,7 +9,7 @@ import { ConditionTypes } from 'src/model/static-lists/condition-types';
 })
 export class SubInputComponent implements OnInit {
   @Input('index') index: number;
-  @Input('formGroup') formGroup: FormGroup;
+  @Input('parentFormGroup') parentFormGroup: FormGroup;
   conditionTypes: IConditionType[] = ConditionTypes;
   constructor() {}
 
