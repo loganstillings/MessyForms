@@ -8,12 +8,13 @@ import {
 import { BehaviorSubject } from 'rxjs';
 import { DexieService } from './dexie.service';
 import { Dexie } from 'dexie';
+import { IQuestion } from 'src/model/interfaces/question';
 
 @Injectable()
 export class CommonService {
   private _formGroupSource = new BehaviorSubject<FormGroup>(new FormGroup({}));
   formGroup$ = this._formGroupSource.asObservable();
-  table: Dexie.Table<any, number>;
+  table: Dexie.Table<IQuestion, number>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -52,9 +53,9 @@ export class CommonService {
     return group.get('SubInputs');
   }
 
-  bulkAdd(arr) {
+  saveForm(arr: IQuestion[]): void {
     this.table
-      .bulkAdd(arr)
+      .bulkPut(arr)
       .then(function(lastKey) {
         console.log(lastKey);
       })
@@ -63,7 +64,7 @@ export class CommonService {
       });
   }
 
-  getAll() {
-    return this.table.toArray();
+  getAll(): Dexie.Promise<IQuestion[]> {
+    return this.table.orderBy(':id').toArray();
   }
 }
