@@ -49,10 +49,7 @@ export class AppComponent implements OnInit {
   }
 
   save(): void {
-    let value = this.getFormValue();
-    console.log(value);
-    console.log(this.customBuiltForm);
-    this.commonService.saveForm(value);
+    this.commonService.saveForm(this.getFormValue());
     /*
       TODOs:
       1. Clean this up so as to 'merge' the form state instead of bulk adding

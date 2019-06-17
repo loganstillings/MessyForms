@@ -55,17 +55,24 @@ export class CommonService {
   }
 
   saveForm(arr: IQuestion[]): void {
-    this.table
-      .bulkPut(arr)
-      .then(function(lastKey) {
-        console.log(lastKey);
+    this.getAll()
+      .then((existingQuestions) => {
+        let questionsToRemove = existingQuestions.filter((eq) => {
+          return arr.findIndex((q) => q.Id === eq.Id) === -1;
+        });
+        questionsToRemove.forEach((qtr) => {
+          this.table.delete(qtr.Id).catch(this.catchError);
+        });
+        this.table.bulkPut(arr).catch(this.catchError);
       })
-      .catch(function(e) {
-        console.error(e);
-      });
+      .catch(this.catchError);
   }
 
   getAll(): Dexie.Promise<IQuestion[]> {
     return this.table.orderBy(':id').toArray();
+  }
+
+  private catchError(err) {
+    console.log(err);
   }
 }
