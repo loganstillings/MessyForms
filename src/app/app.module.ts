@@ -7,6 +7,7 @@ import { SubInputsComponent } from './sub-inputs/sub-inputs.component';
 import { SubInputComponent } from './sub-input/sub-input.component';
 import { QuestionBaseComponent } from './question-base/question-base.component';
 import { CommonService } from './common.service';
+import { DexieService } from './dexie.service';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import { CommonService } from './common.service';
     QuestionBaseComponent,
   ],
   imports: [BrowserModule, ReactiveFormsModule],
-  providers: [CommonService],
+  providers: [CommonService, DexieService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

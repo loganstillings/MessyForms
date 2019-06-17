@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
+import { Dexie } from 'dexie';
 import { CommonService } from './common.service';
 
 @Component({
@@ -9,6 +10,7 @@ import { CommonService } from './common.service';
 export class AppComponent implements OnInit {
   title = 'MessyForms';
   customBuiltForm: FormArray;
+  db: Dexie;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -16,7 +18,14 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.customBuiltForm = this.formBuilder.array([]);
+    this.commonService.getAll().then((questions) => {
+      if (questions && questions.length) {
+        console.log(questions);
+        this.customBuiltForm = this.formBuilder.array([]);
+      } else {
+        this.customBuiltForm = this.formBuilder.array([]);
+      }
+    });
   }
 
   addInput(): void {
@@ -30,7 +39,7 @@ export class AppComponent implements OnInit {
   }
 
   createForm(): void {
-    console.log(this.customBuiltForm);
+    this.commonService.bulkAdd(this.customBuiltForm.value);
   }
 
   hasSubInputs(group: FormGroup): boolean {
