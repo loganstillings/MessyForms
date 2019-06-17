@@ -24,8 +24,9 @@ export class CommonService {
   }
 
   delete(index: number, formGroup: FormGroup): void {
-    if (formGroup.parent) {
-      (<FormArray>formGroup.parent)['controls'].splice(index, 1);
+    let parent: FormArray = formGroup.parent as FormArray;
+    if (parent) {
+      parent['controls'].splice(index, 1);
     }
   }
 

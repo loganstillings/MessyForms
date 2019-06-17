@@ -49,15 +49,15 @@ export class AppComponent implements OnInit {
   }
 
   save(): void {
-    this.commonService.saveForm(this.customBuiltForm.value);
+    let value = this.getFormValue();
+    console.log(value);
+    console.log(this.customBuiltForm);
+    this.commonService.saveForm(value);
     /*
       TODOs:
       1. Clean this up so as to 'merge' the form state instead of bulk adding
-      2. Remove 'any' and create interfaces for everythin
-      3. Add Id properties in those interfaces, associate it with index?
-      4. Clean up this component, the ngOnInit is too big and the recursive function needs a nother look
-      5. Move the dexie stuff into its own service
-      6. Figure out why deleting the form control does not remove the value from the parent
+      2. Clean up this component, the ngOnInit is too big and the recursive function needs a nother look
+      3. Move the dexie stuff into its own service
     */
   }
 
@@ -78,5 +78,41 @@ export class AppComponent implements OnInit {
       formGroups.push(group);
     });
     return this.formBuilder.array(formGroups);
+  }
+
+  getFormValue(): any {
+    let value = [];
+    this.customBuiltForm.controls.forEach((question: FormGroup) => {
+      value.push(this.getFormGroupValue(question));
+    });
+    return value;
+  }
+
+  getFormGroupValue(formGroup: FormGroup) {
+    let question: IQuestion = {
+      Id: formGroup.get('Id').value,
+      Question: formGroup.get('Question').value,
+      QuestionTypeId: formGroup.get('QuestionTypeId').value,
+      SubInputs: formGroup
+        .get('SubInputs')
+        ['controls'].map((subInputFormGroup: FormGroup) => {
+          return this.getSubInputsValue(subInputFormGroup);
+        }),
+    };
+    return question;
+  }
+
+  getSubInputsValue(subInputFormGroup: FormGroup): any {
+    let subInput: ISubInput = {
+      Id: null,
+      Question: subInputFormGroup.get('Question').value,
+      QuestionTypeId: subInputFormGroup.get('QuestionTypeId').value,
+      ConditionTypeId: subInputFormGroup.get('ConditionTypeId').value,
+      ConditionValue: subInputFormGroup.get('ConditionValue').value,
+      SubInputs: subInputFormGroup.get('SubInputs')['controls'].map((sifg) => {
+        return this.getSubInputsValue(sifg);
+      }),
+    };
+    return subInput;
   }
 }
