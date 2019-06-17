@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
         let questionFormGroups: FormGroup[] = [];
         questions.forEach((q) => {
           let group = this.formBuilder.group({
+            Id: q.Id,
             Question: q.Question,
             QuestionTypeId: q.QuestionTypeId,
             SubInputs: this.getSubInPutsFormArray(q.SubInputs),
@@ -39,6 +40,7 @@ export class AppComponent implements OnInit {
   addInput(): void {
     this.customBuiltForm.push(
       this.formBuilder.group({
+        Id: this.customBuiltForm.length + 1,
         Question: null,
         QuestionTypeId: null,
         SubInputs: this.formBuilder.array([]),
@@ -48,8 +50,8 @@ export class AppComponent implements OnInit {
 
   save(): void {
     this.commonService.saveForm(this.customBuiltForm.value);
-    /* 
-      TODOs: 
+    /*
+      TODOs:
       1. Clean this up so as to 'merge' the form state instead of bulk adding
       2. Remove 'any' and create interfaces for everythin
       3. Add Id properties in those interfaces, associate it with index?
