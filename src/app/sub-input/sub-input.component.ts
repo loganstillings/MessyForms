@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { IConditionType } from 'src/model/interfaces/condition-type';
-import { ConditionTypes } from 'src/model/static-lists/condition-types';
-import { QuestionTypesEnum } from 'src/model/enums/QuestionTypes';
-import { ConditionTypesEnum } from 'src/model/enums/ConditionTypes';
+import { IConditionType } from '../../model/interfaces/condition-type';
+import { ConditionTypes } from '../../model/static-lists/condition-types';
+import { QuestionTypesEnum } from '../../model/enums/QuestionTypes';
+import { ConditionTypesEnum } from '../../model/enums/ConditionTypes';
 import { Subscription } from 'rxjs';
 
 @Component({

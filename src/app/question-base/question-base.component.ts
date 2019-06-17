@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CommonService } from '../common.service';
-import { IQuestionType } from 'src/model/interfaces/question-type';
-import { QuestionTypes } from 'src/model/static-lists/question-types';
+import { IQuestionType } from '../../model/interfaces/question-type';
+import { QuestionTypes } from '../../model/static-lists/question-types';
 
 @Component({
   selector: 'app-question-base',

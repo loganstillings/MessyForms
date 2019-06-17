@@ -6,22 +6,15 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
-import { DexieService } from './dexie.service';
-import { Dexie } from 'dexie';
-import { IQuestion } from 'src/model/interfaces/question';
+import { ISubInput } from '../model/interfaces/sub-input';
+import { IQuestion } from '../model/interfaces/question';
 
 @Injectable()
 export class CommonService {
   private _formGroupSource = new BehaviorSubject<FormGroup>(new FormGroup({}));
   formGroup$ = this._formGroupSource.asObservable();
-  table: Dexie.Table<IQuestion, number>;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private dexieService: DexieService,
-  ) {
-    this.table = this.dexieService.table('questions');
-  }
+  constructor(private formBuilder: FormBuilder) {}
 
   delete(index: number, formGroup: FormGroup): void {
     let parent: FormArray = formGroup.parent as FormArray;
@@ -54,25 +47,31 @@ export class CommonService {
     return group.get('SubInputs');
   }
 
-  saveForm(arr: IQuestion[]): void {
-    this.getAll()
-      .then((existingQuestions) => {
-        let questionsToRemove = existingQuestions.filter((eq) => {
-          return arr.findIndex((q) => q.Id === eq.Id) === -1;
-        });
-        questionsToRemove.forEach((qtr) => {
-          this.table.delete(qtr.Id).catch(this.catchError);
-        });
-        this.table.bulkPut(arr).catch(this.catchError);
-      })
-      .catch(this.catchError);
+  getSubInputsValue(subInputFormGroup: FormGroup): any {
+    let subInput: ISubInput = {
+      Id: null,
+      Question: subInputFormGroup.get('Question').value,
+      QuestionTypeId: subInputFormGroup.get('QuestionTypeId').value,
+      ConditionTypeId: subInputFormGroup.get('ConditionTypeId').value,
+      ConditionValue: subInputFormGroup.get('ConditionValue').value,
+      SubInputs: subInputFormGroup.get('SubInputs')['controls'].map((sifg) => {
+        return this.getSubInputsValue(sifg);
+      }),
+    };
+    return subInput;
   }
 
-  getAll(): Dexie.Promise<IQuestion[]> {
-    return this.table.orderBy(':id').toArray();
-  }
-
-  private catchError(err) {
-    console.log(err);
+  getFormGroupValue(formGroup: FormGroup) {
+    let question: IQuestion = {
+      Id: formGroup.get('Id').value,
+      Question: formGroup.get('Question').value,
+      QuestionTypeId: formGroup.get('QuestionTypeId').value,
+      SubInputs: formGroup
+        .get('SubInputs')
+        ['controls'].map((subInputFormGroup: FormGroup) => {
+          return this.getSubInputsValue(subInputFormGroup);
+        }),
+    };
+    return question;
   }
 }

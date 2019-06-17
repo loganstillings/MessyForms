@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
 import { CommonService } from './common.service';
-import { ISubInput } from 'src/model/interfaces/sub-input';
-import { IQuestion } from 'src/model/interfaces/question';
+import { ISubInput } from '../model/interfaces/sub-input';
+import { IQuestion } from '../model/interfaces/question';
+import { QuestionService } from './question.service';
 
 @Component({
   selector: 'app-root',
@@ -15,26 +16,27 @@ export class AppComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private commonService: CommonService,
+    private questionService: QuestionService,
   ) {}
 
   ngOnInit(): void {
-    this.commonService.getAll().then((questions: IQuestion[]) => {
-      if (questions && questions.length) {
-        let questionFormGroups: FormGroup[] = [];
-        questions.forEach((q) => {
-          let group = this.formBuilder.group({
-            Id: q.Id,
-            Question: q.Question,
-            QuestionTypeId: q.QuestionTypeId,
-            SubInputs: this.getSubInPutsFormArray(q.SubInputs),
-          });
-          questionFormGroups.push(group);
-        });
-        this.customBuiltForm = this.formBuilder.array(questionFormGroups);
-      } else {
-        this.customBuiltForm = this.formBuilder.array([]);
-      }
+    this.getQuestionsFromIndexedDb();
+  }
+
+  getQuestionsFromIndexedDb(): void {
+    this.questionService.getAll().then((questions: IQuestion[]) => {
+      this.buildFormArray(questions);
     });
+  }
+
+  buildFormArray(questions): void {
+    if (questions && questions.length) {
+      this.customBuiltForm = this.formBuilder.array(
+        this.getQuestionFormGroups(questions),
+      );
+    } else {
+      this.customBuiltForm = this.formBuilder.array([]);
+    }
   }
 
   addInput(): void {
@@ -49,17 +51,29 @@ export class AppComponent implements OnInit {
   }
 
   save(): void {
-    this.commonService.saveForm(this.getFormValue());
-    /*
-      TODOs:
-      1. Clean this up so as to 'merge' the form state instead of bulk adding
-      2. Clean up this component, the ngOnInit is too big and the recursive function needs a nother look
-      3. Move the dexie stuff into its own service
-    */
+    this.questionService.saveForm(this.getFormValue());
   }
 
   hasSubInputs(group: FormGroup): boolean {
     return this.commonService.hasSubInputs(group);
+  }
+
+  showSaveButton(): boolean {
+    return this.customBuiltForm.controls.length > 0;
+  }
+
+  getQuestionFormGroups(questions): FormGroup[] {
+    let questionFormGroups: FormGroup[] = [];
+    questions.forEach((q) => {
+      let group = this.formBuilder.group({
+        Id: q.Id,
+        Question: q.Question,
+        QuestionTypeId: q.QuestionTypeId,
+        SubInputs: this.getSubInPutsFormArray(q.SubInputs),
+      });
+      questionFormGroups.push(group);
+    });
+    return questionFormGroups;
   }
 
   getSubInPutsFormArray(subInputs: ISubInput[]): FormArray {
@@ -80,36 +94,8 @@ export class AppComponent implements OnInit {
   getFormValue(): any {
     let value = [];
     this.customBuiltForm.controls.forEach((question: FormGroup) => {
-      value.push(this.getFormGroupValue(question));
+      value.push(this.commonService.getFormGroupValue(question));
     });
     return value;
-  }
-
-  getFormGroupValue(formGroup: FormGroup) {
-    let question: IQuestion = {
-      Id: formGroup.get('Id').value,
-      Question: formGroup.get('Question').value,
-      QuestionTypeId: formGroup.get('QuestionTypeId').value,
-      SubInputs: formGroup
-        .get('SubInputs')
-        ['controls'].map((subInputFormGroup: FormGroup) => {
-          return this.getSubInputsValue(subInputFormGroup);
-        }),
-    };
-    return question;
-  }
-
-  getSubInputsValue(subInputFormGroup: FormGroup): any {
-    let subInput: ISubInput = {
-      Id: null,
-      Question: subInputFormGroup.get('Question').value,
-      QuestionTypeId: subInputFormGroup.get('QuestionTypeId').value,
-      ConditionTypeId: subInputFormGroup.get('ConditionTypeId').value,
-      ConditionValue: subInputFormGroup.get('ConditionValue').value,
-      SubInputs: subInputFormGroup.get('SubInputs')['controls'].map((sifg) => {
-        return this.getSubInputsValue(sifg);
-      }),
-    };
-    return subInput;
   }
 }
