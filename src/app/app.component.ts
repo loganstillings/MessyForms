@@ -19,9 +19,18 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.commonService.getAll().then((questions) => {
+      console.log(questions);
       if (questions && questions.length) {
-        console.log(questions);
-        this.customBuiltForm = this.formBuilder.array([]);
+        let questionFormGroups: FormGroup[] = [];
+        questions.forEach((q) => {
+          let group = this.formBuilder.group({
+            Question: q.Question,
+            QuestionTypeId: q.QuestionTypeId,
+            SubInputs: this.getSubInPutsFormArray(q.SubInputs),
+          });
+          questionFormGroups.push(group);
+        });
+        this.customBuiltForm = this.formBuilder.array(questionFormGroups);
       } else {
         this.customBuiltForm = this.formBuilder.array([]);
       }
@@ -38,11 +47,26 @@ export class AppComponent implements OnInit {
     );
   }
 
-  createForm(): void {
+  save(): void {
     this.commonService.bulkAdd(this.customBuiltForm.value);
   }
 
   hasSubInputs(group: FormGroup): boolean {
     return this.commonService.hasSubInputs(group);
+  }
+
+  getSubInPutsFormArray(subInputs: any[]): FormArray {
+    let formGroups: FormGroup[] = [];
+    subInputs.forEach((si) => {
+      let group = this.formBuilder.group({
+        Question: si.Question,
+        QuestionTypeId: si.QuestionTypeId,
+        ConditionValue: si.ConditionValue,
+        ConditionTypeId: si.ConditionTypeId,
+        SubInputs: this.getSubInPutsFormArray(si.SubInputs),
+      });
+      formGroups.push(group);
+    });
+    return this.formBuilder.array(formGroups);
   }
 }
