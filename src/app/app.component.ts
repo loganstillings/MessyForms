@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
   }
 
   showSaveButton(): boolean {
-    return this.customBuiltForm.controls.length > 0;
+    return this.customBuiltForm && this.customBuiltForm.controls.length > 0;
   }
 
   getQuestionFormGroups(questions): FormGroup[] {
