@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-import { CommonService } from '../common.service';
+import { CommonService } from '../../services/common.service';
 import { IQuestionType } from '../../model/interfaces/question-type';
 import { QuestionTypes } from '../../model/static-lists/question-types';
 

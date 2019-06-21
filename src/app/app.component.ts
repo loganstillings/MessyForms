@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
 
-import { CommonService } from './common.service';
+import { CommonService } from '../services/common.service';
 import { ISubInput } from '../model/interfaces/sub-input';
 import { IQuestion } from '../model/interfaces/question';
-import { QuestionService } from './question.service';
+import { QuestionService } from '../services/question.service';
 
 @Component({
   selector: 'app-root',
