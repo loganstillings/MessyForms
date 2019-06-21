@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
+
 import { CommonService } from './common.service';
 import { ISubInput } from '../model/interfaces/sub-input';
 import { IQuestion } from '../model/interfaces/question';
@@ -29,7 +30,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  buildFormArray(questions): void {
+  buildFormArray(questions: IQuestion[]): void {
     if (questions && questions.length) {
       this.customBuiltForm = this.formBuilder.array(
         this.getQuestionFormGroups(questions),
@@ -62,40 +63,33 @@ export class AppComponent implements OnInit {
     return this.customBuiltForm && this.customBuiltForm.controls.length > 0;
   }
 
-  getQuestionFormGroups(questions): FormGroup[] {
-    let questionFormGroups: FormGroup[] = [];
-    questions.forEach((q) => {
-      let group = this.formBuilder.group({
+  getQuestionFormGroups(questions: IQuestion[]): FormGroup[] {
+    return questions.map((q: IQuestion) => {
+      return this.formBuilder.group({
         Id: q.Id,
         Question: q.Question,
         QuestionTypeId: q.QuestionTypeId,
         SubInputs: this.getSubInPutsFormArray(q.SubInputs),
       });
-      questionFormGroups.push(group);
     });
-    return questionFormGroups;
   }
 
   getSubInPutsFormArray(subInputs: ISubInput[]): FormArray {
-    let formGroups: FormGroup[] = [];
-    subInputs.forEach((si: ISubInput) => {
-      let group = this.formBuilder.group({
+    const formGroups = subInputs.map((si: ISubInput) => {
+      return this.formBuilder.group({
         Question: si.Question,
         QuestionTypeId: si.QuestionTypeId,
         ConditionValue: si.ConditionValue,
         ConditionTypeId: si.ConditionTypeId,
         SubInputs: this.getSubInPutsFormArray(si.SubInputs),
       });
-      formGroups.push(group);
     });
     return this.formBuilder.array(formGroups);
   }
 
-  getFormValue(): any {
-    let value = [];
-    this.customBuiltForm.controls.forEach((question: FormGroup) => {
-      value.push(this.commonService.getFormGroupValue(question));
+  getFormValue(): IQuestion[] {
+    return this.customBuiltForm.controls.map((question: FormGroup) => {
+      return this.commonService.getFormGroupValue(question);
     });
-    return value;
   }
 }

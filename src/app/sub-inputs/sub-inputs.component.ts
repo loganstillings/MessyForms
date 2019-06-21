@@ -1,14 +1,15 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormArray, FormGroup, AbstractControl } from '@angular/forms';
-import { CommonService } from '../common.service';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { FormArray, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
+
+import { CommonService } from '../common.service';
 
 @Component({
   selector: 'app-sub-inputs',
   templateUrl: './sub-inputs.component.html',
 })
-export class SubInputsComponent implements OnInit {
-  @Input('parentFormGroup') parentFormGroup: FormGroup;
+export class SubInputsComponent implements OnInit, OnDestroy {
+  @Input() parentFormGroup: FormGroup;
   subInputs: FormArray;
   subscriptions: Subscription = new Subscription();
   constructor(private commonService: CommonService) {}
@@ -29,10 +30,12 @@ export class SubInputsComponent implements OnInit {
   }
 
   bindChanges(): void {
-    let abstractControl = this.commonService.getSubInputs(this.parentFormGroup);
+    const abstractControl = this.commonService.getSubInputs(
+      this.parentFormGroup,
+    );
     this.subInputs = abstractControl['controls'];
     abstractControl.setParent(this.parentFormGroup);
-    for (var i = 0; i < this.subInputs.length; i++) {
+    for (const i in this.subInputs) {
       if (!this.subInputs[i].parent) {
         this.subInputs[i].setParent(this.parentFormGroup.get(
           'SubInputs',
