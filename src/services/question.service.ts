@@ -21,6 +21,10 @@ export class QuestionService {
         questionsToRemove.forEach((qtr: IQuestion) => {
           this.table.delete(qtr.Id).catch(this.catchError);
         });
+        arr.map((question: IQuestion, index: number) => {
+          question.Id = index;
+          return question;
+        });
         this.table.bulkPut(arr).catch(this.catchError);
       })
       .catch(this.catchError);
