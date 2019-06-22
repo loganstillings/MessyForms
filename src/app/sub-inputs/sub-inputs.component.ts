@@ -31,7 +31,7 @@ export class SubInputsComponent implements OnInit, OnDestroy {
 
   bindChanges(): void {
     const abstractControl = this.formService.getSubInputs(this.parentFormGroup);
-    this.subInputs = abstractControl['controls'];
+    this.subInputs = (abstractControl as any).controls;
     abstractControl.setParent(this.parentFormGroup);
     for (const i in this.subInputs) {
       if (!this.subInputs[i].parent) {

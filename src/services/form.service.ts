@@ -48,7 +48,7 @@ export class FormService {
     return group.get('SubInputs');
   }
 
-  getSubInputsValue(subInputFormGroup: FormGroup): any {
+  getSubInputsValue(subInputFormGroup: FormGroup): ISubInput {
     const subInput: ISubInput = {
       Id: null,
       Question: subInputFormGroup.get('Question').value,
