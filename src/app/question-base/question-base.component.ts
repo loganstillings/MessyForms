@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-import { CommonService } from '../../services/common.service';
+import { FormService } from '../../services/form.service';
 import { IQuestionType } from '../../model/interfaces/question-type';
 import { QuestionTypes } from '../../model/static-lists/question-types';
 
@@ -14,13 +14,13 @@ export class QuestionBaseComponent {
   @Input() formGroup: FormGroup;
   questionTypes: IQuestionType[] = QuestionTypes;
 
-  constructor(private commonService: CommonService) {}
+  constructor(private formService: FormService) {}
 
   delete(): void {
-    this.commonService.delete(this.index, this.formGroup);
+    this.formService.delete(this.index, this.formGroup);
   }
 
   addSubInput(): void {
-    this.commonService.addSubInput(this.formGroup);
+    this.formService.addSubInput(this.formGroup);
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
 
-import { CommonService } from '../services/common.service';
+import { FormService } from '../services/form.service';
 import { ISubInput } from '../model/interfaces/sub-input';
 import { IQuestion } from '../model/interfaces/question';
 import { QuestionService } from '../services/question.service';
@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private commonService: CommonService,
+    private formService: FormService,
     private questionService: QuestionService,
   ) {}
 
@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
   }
 
   hasSubInputs(group: FormGroup): boolean {
-    return this.commonService.hasSubInputs(group);
+    return this.formService.hasSubInputs(group);
   }
 
   showSaveButton(): boolean {
@@ -89,7 +89,7 @@ export class AppComponent implements OnInit {
 
   getFormValue(): IQuestion[] {
     return this.customBuiltForm.controls.map((question: FormGroup) => {
-      return this.commonService.getFormGroupValue(question);
+      return this.formService.getFormGroupValue(question);
     });
   }
 }

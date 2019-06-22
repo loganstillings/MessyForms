@@ -11,7 +11,7 @@ import { ISubInput } from '../model/interfaces/sub-input';
 import { IQuestion } from '../model/interfaces/question';
 
 @Injectable()
-export class CommonService {
+export class FormService {
   private formGroupSource = new BehaviorSubject<FormGroup>(new FormGroup({}));
   formGroup$ = this.formGroupSource.asObservable();
 
@@ -20,12 +20,12 @@ export class CommonService {
   delete(index: number, formGroup: FormGroup): void {
     const parent: FormArray = formGroup.parent as FormArray;
     if (parent) {
-      parent['controls'].splice(index, 1);
+      parent.controls.splice(index, 1);
     }
   }
 
   addSubInput(formGroup: FormGroup): void {
-    this.getSubInputs(formGroup)['controls'].push(
+    (this.getSubInputs(formGroup) as FormArray).controls.push(
       this.formBuilder.group({
         Question: null,
         QuestionTypeId: null,
@@ -38,9 +38,9 @@ export class CommonService {
   }
 
   hasSubInputs(group: FormGroup): boolean {
-    const subInputs = this.getSubInputs(group);
+    const subInputs = this.getSubInputs(group) as FormArray;
     const hasSubInputs =
-      subInputs && subInputs['controls'] && subInputs['controls'].length;
+      subInputs && subInputs.controls && subInputs.controls.length > 0;
     return hasSubInputs;
   }
 
@@ -55,11 +55,11 @@ export class CommonService {
       QuestionTypeId: subInputFormGroup.get('QuestionTypeId').value,
       ConditionTypeId: subInputFormGroup.get('ConditionTypeId').value,
       ConditionValue: subInputFormGroup.get('ConditionValue').value,
-      SubInputs: subInputFormGroup
-        .get('SubInputs')
-        ['controls'].map((sifg: FormGroup) => {
+      SubInputs: (subInputFormGroup.get('SubInputs') as FormArray).controls.map(
+        (sifg: FormGroup) => {
           return this.getSubInputsValue(sifg);
-        }),
+        },
+      ),
     };
     return subInput;
   }
@@ -69,11 +69,11 @@ export class CommonService {
       Id: formGroup.get('Id').value,
       Question: formGroup.get('Question').value,
       QuestionTypeId: formGroup.get('QuestionTypeId').value,
-      SubInputs: formGroup
-        .get('SubInputs')
-        ['controls'].map((subInputFormGroup: FormGroup) => {
+      SubInputs: (formGroup.get('SubInputs') as FormArray).controls.map(
+        (subInputFormGroup: FormGroup) => {
           return this.getSubInputsValue(subInputFormGroup);
-        }),
+        },
+      ),
     };
     return question;
   }
