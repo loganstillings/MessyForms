@@ -2,10 +2,10 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { IConditionType } from '../../model/interfaces/condition-type';
-import { ConditionTypes } from '../../model/static-lists/condition-types';
-import { QuestionTypesEnum } from '../../model/enums/QuestionTypes';
-import { ConditionTypesEnum } from '../../model/enums/ConditionTypes';
+import { IConditionType } from '../../../../model/interfaces/condition-type';
+import { QuestionTypesEnum } from '../../../../model/enums/QuestionTypes';
+import { ConditionTypes } from '../../../../model/static-lists/condition-types';
+import { ConditionTypesEnum } from '../../../../model/enums/ConditionTypes';
 
 @Component({
   selector: 'app-sub-input',

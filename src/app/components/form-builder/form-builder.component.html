@@ -1,0 +1,10 @@
+<div class="card padded">
+  <h4>Form Builder</h4>
+  <form *ngIf="customBuiltForm" [formGroup]="customBuiltForm">
+    <app-questions-list [customBuiltForm]="customBuiltForm"></app-questions-list>
+  </form>
+</div>
+<div class="row padded">
+  <button class="spaced btn btn-secondary" (click)="addInput()">Add Input</button>
+  <button class="spaced btn btn-primary" *ngIf="showSaveButton()" (click)="save()">Save Form</button>
+</div>

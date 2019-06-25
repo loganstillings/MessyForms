@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { FormService } from '../../services/form.service';
+import { FormService } from '../../../../services/form.service';
 
 @Component({
   selector: 'app-sub-inputs',

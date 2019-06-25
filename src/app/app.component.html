@@ -1,17 +1,1 @@
-<div class="card padded">
-  <h4>Form Builder</h4>
-  <form *ngIf="customBuiltForm" [formGroup]="customBuiltForm">
-    <div *ngFor="let question of customBuiltForm.controls; let i = index">
-      <div class="question-block padded">
-        <app-question-base [index]="i" [formGroup]="question"></app-question-base>
-      </div>
-      <div *ngIf="hasSubInputs(question)">
-        <app-sub-inputs [parentFormGroup]="question"></app-sub-inputs>
-      </div>
-    </div>
-  </form>
-</div>
-<div class="row padded">
-  <button class="spaced btn btn-secondary" (click)="addInput()">Add Input</button>
-  <button class="spaced btn btn-primary" *ngIf="showSaveButton()" (click)="save()">Save Form</button>
-</div>
+<app-form-builder></app-form-builder>
