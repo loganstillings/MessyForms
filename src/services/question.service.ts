@@ -12,20 +12,23 @@ export class QuestionService {
     this.table = this.dexieService.table('questions');
   }
 
-  saveForm(arr: IQuestion[]): void {
+  saveForm(currentQuestions: IQuestion[]): void {
     this.getAll()
       .then((existingQuestions: IQuestion[]) => {
-        const questionsToRemove = existingQuestions.filter((eq: IQuestion) => {
-          return arr.findIndex((q: IQuestion) => q.Id === eq.Id) === -1;
+        const questionIdsToRemove = existingQuestions // Removing questions that are greater than the length of the current questions
+          .filter(
+            (topLevelQuestion) =>
+              topLevelQuestion.Id >= currentQuestions.length,
+          )
+          .map((question) => question.Id);
+        this.table.bulkDelete(questionIdsToRemove).then(() => {
+          // delete those questions
+          currentQuestions.map(
+            // assign Id of current questions to be the index
+            (currentQuestion, index) => (currentQuestion.Id = index),
+          );
+          this.table.bulkPut(currentQuestions).catch(this.catchError);
         });
-        questionsToRemove.forEach((qtr: IQuestion) => {
-          this.table.delete(qtr.Id).catch(this.catchError);
-        });
-        arr.map((question: IQuestion, index: number) => {
-          question.Id = index;
-          return question;
-        });
-        this.table.bulkPut(arr).catch(this.catchError);
       })
       .catch(this.catchError);
   }
