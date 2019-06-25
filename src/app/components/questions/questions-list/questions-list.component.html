@@ -4,7 +4,7 @@
       <app-question-base [index]="i" [formGroup]="question"></app-question-base>
     </div>
     <div *ngIf="hasSubInputs(question)">
-      <app-sub-inputs [parentFormGroup]="question"></app-sub-inputs>
+      <app-sub-inputs-list [parentFormGroup]="question"></app-sub-inputs-list>
     </div>
   </div>
 </div>

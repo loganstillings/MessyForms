@@ -5,10 +5,10 @@ import { Subscription } from 'rxjs';
 import { FormService } from '../../../../services/form.service';
 
 @Component({
-  selector: 'app-sub-inputs',
-  templateUrl: './sub-inputs.component.html',
+  selector: 'app-sub-inputs-list',
+  templateUrl: './sub-inputs-list.component.html',
 })
-export class SubInputsComponent implements OnInit, OnDestroy {
+export class SubInputsListComponent implements OnInit, OnDestroy {
   @Input() parentFormGroup: FormGroup;
   subInputs: FormArray;
   subscriptions: Subscription = new Subscription();
